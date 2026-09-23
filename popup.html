@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Naukri Auto Follow</title>
+<style>
+    :root {
+        --blue: #2563eb;
+        --green: #16a34a;
+        --amber: #f59e0b;
+        --gray: #6b7280;
+        --red: #dc2626;
+        --bg: #f9fafb;
+        --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+        width: 300px;
+        margin: 0;
+        padding: 14px;
+        font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+        font-size: 13px;
+        color: #111827;
+        background: var(--bg);
+    }
+    h1 {
+        font-size: 14px;
+        margin: 0 0 2px 0;
+    }
+    .subtitle {
+        font-size: 11px;
+        color: var(--gray);
+        margin: 0 0 12px 0;
+    }
+    .card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+    }
+    .status-line {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+    .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--gray);
+        flex-shrink: 0;
+    }
+    .status-message {
+        font-size: 11.5px;
+        color: #374151;
+        line-height: 1.4;
+    }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 10px;
+        margin-top: 8px;
+        font-size: 12px;
+    }
+    .stats-grid div span {
+        display: block;
+        font-size: 10.5px;
+        color: var(--gray);
+    }
+    .batch-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11.5px;
+        color: #374151;
+        margin-top: 6px;
+    }
+    label {
+        font-size: 11.5px;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+    input[type="number"] {
+        width: 60px;
+        padding: 4px 6px;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        font-size: 12px;
+    }
+    button {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 6px;
+        border: none;
+        border-radius: 6px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    #startBtn { background: var(--blue); color: #fff; }
+    #continueBtn { background: var(--amber); color: #fff; display: none; }
+    #stopBtn { background: #fff; color: var(--red); border: 1px solid var(--red); }
+    #resetBtn { background: #fff; color: var(--gray); border: 1px solid var(--border); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .failed-list {
+        max-height: 70px;
+        overflow-y: auto;
+        font-size: 10.5px;
+        color: var(--red);
+        margin-top: 6px;
+        display: none;
+    }
+    .failed-list div { padding: 2px 0; border-top: 1px dashed var(--border); word-break: break-all; }
+    .hint { font-size: 10.5px; color: var(--gray); margin-top: 8px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+    <h1>Naukri Auto Follow</h1>
+    <p class="subtitle">Follows companies on your filtered list, in batches.</p>
+
+    <div class="card">
+        <div class="status-line">
+            <span class="dot" id="statusDot"></span>
+            <span id="statusLabel">Idle</span>
+        </div>
+        <div class="status-message" id="statusMessage">Ready.</div>
+
+        <div class="stats-grid">
+            <div><span>Processed</span><strong id="statTotal">0</strong></div>
+            <div><span>Followed</span><strong id="statFollowed">0</strong></div>
+            <div><span>Already following</span><strong id="statAlready">0</strong></div>
+            <div><span>Failed</span><strong id="statFailed">0</strong></div>
+        </div>
+
+        <div class="batch-row">
+            <span id="batchLabel">Batch 1</span>
+            <span id="batchProgress">0 / 25</span>
+        </div>
+
+        <div class="failed-list" id="failedList"></div>
+    </div>
+
+    <label>
+        Batch size
+        <input type="number" id="batchSizeInput" min="1" max="500" value="25">
+    </label>
+
+    <button id="continueBtn">Continue batch</button>
+    <button id="startBtn">Start</button>
+    <button id="stopBtn">Stop</button>
+    <button id="resetBtn">Reset progress</button>
+
+    <p class="hint">
+        Keep your filtered Naukri list open and active before clicking Start.
+        The popup can close on its own once a company tab opens — that's normal,
+        the run keeps going in the background. Check the toolbar badge or reopen
+        this popup any time to see progress or continue a paused batch.
+    </p>
+
+    <script src="popup.js"></script>
+</body>
+</html>
